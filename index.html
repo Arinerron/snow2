@@ -2,20 +2,23 @@
 <html>
 <head>
 	<meta charset='utf-8'>
+    <!-- Copyright (c) 2017 Kevin Froman MIT (expat) license -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-	<title>Snow2</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" integrity="sha384-MI32KR77SgI9QAPUs+6R7leEOwtop70UsjEtFEezfKnMjXWx15NENsZpfDgq8m8S" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js" integrity="sha384-8gBf6Y4YYq7Jx97PIqmTwLPin4hxIzQw5aDmUg/DDhul9fFpbbLcLh3nTIIDJKhx" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.10/clipboard.min.js" integrity="sha384-f7wOtFps7eeIwcPoS0BT08o/onjsbd16QnjQmOoqVIimY7dzcSzfDU/htuPJlTFX" crossorigin="anonymous"></script>
+	<meta name='description' content="Perform Whitespace steganography with encryption and zero width characters">
+    <meta name='author' content='Kevin Froman'>
+    <title>Snow2</title>
+	<link rel="stylesheet" href="./bootstrap.min.css">
+	<link rel="stylesheet" href="./bootstrap-theme.min.css">
+	<link rel="stylesheet" href="./font-awesome.min.css">
+	<script src="./jquery.min.js"></script>
+	<script src="./bootstrap.min.js"></script>
+	<script src="./clipboard.min.js"></script>
 	<script src='./aes.min.js'></script>
 	<link rel='stylesheet' href='./theme.min.css'>
 
 </head>
 <body>
-
+<a href="https://github.com/beardog108/snow2/"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
 <div class="modal fade" id="outputModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -38,16 +41,21 @@
 	<div class='container'>
 
 		<div class='page-header'>
-			<h1 class='center'>Snow2</h1>
+			<h1 class='center'>Snow2 ☃</h1>
 		</div>
-		<p>Snow2 is a simple web app for converting text to white-space characters, which you can hide in text files or other documents. It is inspired by the <a href='http://darkside.com.au/snow/'>original program</a> published in 1998.</p>
+		<p>Snow2 is a simple web app for converting text to whitespace characters, which can be hidden in normal messages.</p>
+	<p>It is inspired by the <a href='http://darkside.com.au/snow/'>original program</a> published in 1998.</p>
 		<div id='dataArea'>
 			<textarea id='text' placeholder=''></textarea>
-		</div><br><br>
+		</div>
+		<div class='center'><button class='btn btn-sm btn-default dataItem' id='clearInputButton'>Clear Input <i class='fa fa-cross'></i></button></div>
+		<br><br>
 		<div class='center'>
+			<label>Use Zero-Width Characters <input type='checkbox' id='useZeroWidthCharacters' checked></label>
+			<br><br>
 			<label>Use Encryption <input type='checkbox' id='useEncrypt' checked></label>
 			<br><br>
-			<div id='one'><button id='toggle' class='btn btn-primary'>Encode <i class='fa fa-lock'></i></button></div>
+			<div id='one'><button id='toggle' class='btn btn-primary'>Encode Mode <i class='fa fa-lock'></i></button></div>
 			<span id='encryptArea'>
 				<input type='password' id='password' placeholder='Encryption password' class='dataItem'>
 				<br>
@@ -56,8 +64,8 @@
 			</span>
 			<button id='go' class='btn btn-success btn-lg dataItem'>Go</button>
 		</div>
-		<footer class='center'><a href='https://github.com/beardog108/snow2/releases/'>Available for Windows/Linux</a> (Offers increased security)<br>By using this service you agree to our <a href='/legal/'>terms</a>.</footer>
 	</div>
+	<footer class='center'>made with <i class='fa fa-heart'></i> by <a href='https://chaoswebs.net/'>Beardog</a></footer>​‍​​‍​​​​‍‍​​‍​‍​‍‍‍‍​​‍​​‍​​‍​‍​​‍‍​​‍​​‍​​​​‍‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍‍‍​​‍​‍‍​‍‍‍‍​‍‍‍​‍​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍​​‍‍​​‍‍​‍‍‍‍​‍‍‍​‍​‍​‍‍​‍‍‍​​‍‍​​‍​​​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍​‍​​‍​‍‍‍​‍​​​​‍​​​​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍​​​‍‍‍​‍‍​‍‍‍‍​‍‍​‍‍‍‍​‍‍​​‍​​​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍​​‍‍​​‍‍​‍‍‍‍​‍‍‍​​‍​​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍‍‍​​‍​‍‍​‍‍‍‍​‍‍‍​‍​‍​​‍​​​​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍​​‍​​​​‍‍​​‍​‍​‍‍‍​​‍​​‍‍​​‍​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍​‍​​‍​‍‍‍​​‍‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍​​​​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍‍​‍​‍​‍‍​‍‍‍​​‍‍​‍​​‍​‍‍​​​‍‍​‍‍​‍‍‍‍​‍‍​​‍​​​‍‍​​‍​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​‍‍‍​​‍‍​‍‍​‍‍‍​​‍‍​‍‍‍‍​‍‍‍​‍‍‍​‍‍​‍‍​‍​‍‍​​​​‍​‍‍​‍‍‍​​​‍​​‍​‍​​‍‍​​‍‍​‍​​​​​‍​​‍​​‍​‍​​‍‍​​‍​​​‍‍​​​​​​‍​​‍​‍​‍​​​‍​‍​​‍‍​​‍​​​‍​​‍​‍​​‍‍‍​​‍​​‍‍‍​​​​​‍​​‍​‍​​‍‍‍​​​​​‍‍​​‍‍
 	<script src='./main.js'></script>
 </body>
 </html>

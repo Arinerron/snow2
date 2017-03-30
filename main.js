@@ -1,4 +1,24 @@
+/*
+ Copyright (c) 2017 Kevin Froman MIT (expat) license
+*/
 var clipboard = new Clipboard('.btn');
+
+var zero = '​';
+var one = '‍';
+
+var z_zero = '​';
+var z_one = '‍';
+
+var w_zero = ' ';
+var w_one = '\t';
+
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 
 clipboard.on('success', function(e) {
 	$('#copyFeedback').css('display', 'inherit');
@@ -34,22 +54,36 @@ $('#toggle').click(function(){
 	if (window.snowMode == 'encode')
 	{
 		window.snowMode = 'decode';
-		$('#toggle').html("Decode <i class='fa fa-unlock'></i>");
+		$('#toggle').html("Decode Mode <i class='fa fa-unlock'></i>");
 		$('#confirmPass').css('display', 'none');
 	}
 	else
 	{
 		window.snowMode = 'encode';
-		$('#toggle').html("Encode <i class='fa fa-lock'></i>");
+		$('#toggle').html("Encode Mode <i class='fa fa-lock'></i>");
 		$('#confirmPass').css('display', 'inline');
+	}
+
+});
+
+$('#useZeroWidthCharacters').click(function(){
+
+	if (zero == w_zero)
+	{
+		zero = z_zero;
+		one = z_one;
+	}
+	else
+	{
+        zero = w_zero;
+        one = z_one;
 	}
 
 });
 
 /* based on stackoverflow.com/questions/14430633/how-to-convert-text-to-binary-code-in-javascript */
 function binToText(str) {
-	var str = str.replace(/ /g, "1");
-	var str = str.replace(/\t/g, "0");
+    var str = replaceAll(replaceAll(str, one, "1"), zero, "0");
     if(str.match(/[10]{8}/g)){
         var wordFromBinary = str.match(/([10]{8}|\s+)/g).map(function(fromBinary){
             return String.fromCharCode(parseInt(fromBinary, 2) );
@@ -125,12 +159,17 @@ $('#go').click(function(){
 			}
 		}
 		// convert result to binary
-		output = textToBin(input);
-		$('#output').val(output.toString().replace(/1/g, " ").replace(/0/g, "\t"));
+		output = textToBin(encodeURIComponent(input));
+		$('#output').val(replaceAll(replaceAll(output.toString(), "1", one), "0", zero));
 	}
 	else
 	{
-		var output = binToText(input);
+	    var sanitized = "";
+	    var split = input.split("");
+	    for (var i = 0; i < split.length; i++)
+            if(split[i] == one || split[i] == zero)
+                sanitized = sanitized + split[i]
+		var output = decodeURIComponent(binToText(sanitized));
 		if ($('#useEncrypt').is(':checked'))
 		{
 			if (verifyPass('decrypt'))
@@ -145,4 +184,8 @@ $('#go').click(function(){
 		$('#output').val(output.toString());
 	}
 	$('#outputModal').modal();
+});
+
+$('#clearInputButton').click(function(){
+	$('#text').val('');
 });
